@@ -1,0 +1,4 @@
+# FRONT END TIER
+# Create a service named frontend. 
+# Its type should be NodePort, port 
+# should be 80 and its nodePort should be 30009.

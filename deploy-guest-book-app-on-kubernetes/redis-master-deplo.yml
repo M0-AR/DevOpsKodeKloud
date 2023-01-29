@@ -1,0 +1,30 @@
+# BACK-END TIER Create a deployment named redis-master for Redis master.
+# a.) Replicas count should be 1.
+# b.) Container name should be master-redis-xfusion and it should use image redis.
+# c.) Request resources as CPU should be 100m and Memory should be 100Mi.
+# d.) Container port should be redis default port i.e 6379.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-master
+      tier: back-end
+  template:
+    metadata:
+      labels:
+        app: redis-master
+        tier: back-end
+    spec:
+      containers:
+        - name: master-redis-xfuion
+          image: redis
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 6379
