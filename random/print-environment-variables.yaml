@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: print-envars-greeting
+spec:
+  containers:
+  - name: print-env-container
+    image: bash
+    env:
+    - name: GREETING
+      value: Welcome to
+    - name: COMPANY
+      value: Stratos
+    - name: GROUP
+      value: Group
+    command: ["echo"]
+    args: ["$(GREETING) $(COMPANY) $(GROUP)"]
+
+# kubectl logs -f print-envars-greeting
