@@ -1,0 +1,29 @@
+- name: Install and configure simple httpd web server
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Install httpd package
+    yum:
+      name: httpd
+      state: present
+
+  - name: Start and enable httpd service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  - name: Create index.html file
+    copy:
+      content: "This is a Nautilus sample file, created using Ansible!"
+      dest: /var/www/html/index.html
+      owner: apache
+      group: apache
+      mode: 0655
+
+  - name: Add top line to index.html
+    lineinfile:
+      dest: /var/www/html/index.html
+      insertbefore: BOF 
+      line: "Welcome to xFusionCorp Industries!"
