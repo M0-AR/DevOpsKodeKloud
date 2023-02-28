@@ -1,0 +1,31 @@
+---
+- name: Copy files to servers with specific user and group ownership
+  hosts: all
+  become: yes
+  tasks:
+    - name: Copy blog.txt to App Server 1
+      copy:
+        src: /usr/src/itadmin/blog.txt
+        dest: /opt/itadmin/
+        owner: tony
+        group: tony
+        mode: "0744"
+      when: inventory_hostname == "stapp01"
+
+    - name: Copy story.txt to App Server 2
+      copy:
+        src: /usr/src/itadmin/story.txt
+        dest: /opt/itadmin/
+        owner: steve
+        group: steve
+        mode: "0744"
+      when: inventory_hostname == "stapp02"
+
+    - name: Copy media.txt to App Server 3
+      copy:
+        src: /usr/src/itadmin/media.txt
+        dest: /opt/itadmin/
+        owner: banner
+        group: banner
+        mode: "0744"
+      when: inventory_hostname == "stapp03"
