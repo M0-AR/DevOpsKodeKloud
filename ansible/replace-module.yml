@@ -1,0 +1,26 @@
+---
+- name: Replace strings in files
+  hosts: all
+  become: true
+  tasks:
+    - name: Replace xFusionCorp with Nautilus in /opt/data/blog.txt on app server 1
+      replace:
+        path: /opt/data/blog.txt
+        regexp: 'xFusionCorp'
+        replace: 'Nautilus'
+      when: inventory_hostname == 'app_server_1'
+    - name: Replace Nautilus with KodeKloud in /opt/data/story.txt on app server 2
+      replace:
+        path: /opt/data/story.txt
+        regexp: 'Nautilus'
+        replace: 'KodeKloud'
+      when: inventory_hostname == 'app_server_2'
+    - name: Replace KodeKloud with xFusionCorp Industries in /opt/data/media.txt on app server 3
+      replace:
+        path: /opt/data/media.txt
+        regexp: 'KodeKloud'
+        replace: 'xFusionCorp Industries'
+      when: inventory_hostname == 'app_server_3'
+
+# Note: Please make sure to replace the host names app_server_1, app_server_2 and app_server_3 
+# in the playbook with the actual host names of the respective servers.
