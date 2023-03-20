@@ -1,0 +1,24 @@
+Perform a rolling update on the Kubernetes deployment by using the kubectl command. Here are the steps to perform a rolling update:
+
+1- First, check the current deployment status by running the following command:
+
+    'kubectl get deployment nginx-deployment'
+
+2- If the deployment is running, you can update it by running the following command:
+
+    'kubectl set image deployment/nginx-deployment nginx=nginx:1.17'
+
+This command will update the nginx container in the deployment to use the nginx:1.17 image.
+
+3- Verify the update progress by running the following command:
+
+     'kubectl rollout status deployment/nginx-deployment'
+
+This command will show the status of the deployment update process.
+
+4- Once the update is complete, check the status of the deployment and the pods by running the following commands:
+
+     'kubectl get deployment nginx-deployment'
+     'kubectl get pods -l app=nginx'
+
+These commands will show the current status of the deployment and the pods. All the pods should be up and running with the latest nginx:1.17 image.
