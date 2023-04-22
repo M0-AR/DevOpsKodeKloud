@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ic-deploy-devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ic-devops
+  template:
+    metadata:
+      labels:
+        app: ic-devops
+    spec:
+      initContainers:
+      - name: ic-msg-devops
+        image: centos:latest
+        command:
+        - /bin/bash
+        - -c
+        - echo Init Done - Welcome to xFusionCorp Industries > /ic/ecommerce
+        volumeMounts:
+        - name: ic-volume-devops
+          mountPath: /ic
+      containers:
+      - name: ic-main-devops
+        image: centos:latest
+        command:
+        - /bin/bash
+        - -c
+        - while true; do cat /ic/ecommerce; sleep 5; done
+        volumeMounts:
+        - name: ic-volume-devops
+          mountPath: /ic
+      volumes:
+      - name: ic-volume-devops
+        emptyDir: {}
+
+
+# kubectl get pods
+# NAME                               READY   STATUS    RESTARTS   AGE
+# ic-deploy-devops-c9944bcf4-t69d7   1/1     Running   0          24s
+
+# kubectl logs -f ic-deploy-devops-c9944bcf4-t69d7
+# Init Done - Welcome to xFusionCorp Industries
+# Init Done - Welcome to xFusionCorp Industries
+
+# kubectl exec ic-deploy-devops-c9944bcf4-t69d7 -- cat /ic/ecommerce
+# Init Done - Welcome to xFusionCorp Industries
