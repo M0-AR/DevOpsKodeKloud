@@ -1,0 +1,56 @@
+- name: Create an empty file on App Server 2
+  hosts: app_servers
+  become: yes
+
+  tasks:
+    - name: Create /tmp/file.txt
+      ansible.builtin.file:
+        path: /tmp/file.txt
+        state: touch
+
+# ansible-playbook -i inventory playbook.yml
+
+# PLAY [Create an empty file on App Server 2] *********************************************************************
+
+# TASK [Gathering Facts] ******************************************************************************************
+# ok: [stapp02]
+
+# TASK [Create /tmp/file.txt] *************************************************************************************
+# changed: [stapp02]
+
+# PLAY RECAP ******************************************************************************************************
+# stapp02                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+- name: Validate file on App Server 2
+  hosts: app_servers
+  become: yes
+
+  tasks:
+    - name: Check if /tmp/file.txt exists
+      ansible.builtin.command: ls -l /tmp/file.txt
+      register: result
+
+    - name: Display result
+      ansible.builtin.debug:
+        var: result.stdout_lines
+
+# ansible-playbook -i inventory validate.yml
+
+# PLAY [Validate file on App Server 2] ****************************************************************************
+
+# TASK [Gathering Facts] ******************************************************************************************
+# ok: [stapp02]
+
+# TASK [Check if /tmp/file.txt exists] ****************************************************************************
+# changed: [stapp02]
+
+# TASK [Display result] *******************************************************************************************
+# ok: [stapp02] => {
+#     "changed": false, 
+#     "result.stdout_lines": [
+#         "-rw-r--r-- 1 root root 0 Apr 22 10:06 /tmp/file.txt"
+#     ]
+# }
+
+# PLAY RECAP ******************************************************************************************************
+# stapp02                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
