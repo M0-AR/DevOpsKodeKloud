@@ -1,0 +1,15 @@
+- Create the tomcat-deployment-xfusion deployment with one replica
+    'kubectl create deployment tomcat-deployment-xfusion --namespace=tomcat-namespace-xfusion --replicas=1 --image=gcr.io/kodekloud/centos-ssh-enabled:tomcat --port=8080 --dry-run=client -o yaml > deployment.yaml'
+
+    This will create a deployment for the Tomcat app with the name tomcat-deployment-xfusion in the tomcat-namespace-xfusion namespace. The container will be named tomcat-container-xfusion and the image will be gcr.io/kodekloud/centos-ssh-enabled:tomcat. The container port will be set to 8080.
+
+    The --dry-run=client -o yaml options are used to output the YAML for the deployment manifest to the deployment.yaml file. You can edit this file if you need to make any changes before deploying the application.
+
+- Create the deployment using the YAML file:
+    'kubectl apply -f deployment.yaml'
+
+- Create the tomcat-service-xfusion service:
+    'kubectl create service nodeport tomcat-service-xfusion --namespace=tomcat-namespace-xfusion --tcp=8080:8080 --node-port=32227'
+    This will create a service for the Tomcat app with the name tomcat-service-xfusion in the tomcat-namespace-xfusion namespace. The service type will be NodePort and the node port will be set to 32227.
+
+After running these commands, you can verify that the application is up and running by accessing it on the NodePort that was specified in the service definition. In this case, you can access it at http://<node-ip>:32227/
