@@ -11,9 +11,6 @@ class mysql_database {
     require => Package['mariadb-server'],
   }
 
-  # Install the puppetlabs/mysql module to manage MySQL resources
-  include '::mysql::server'
-
   # Create the database and user with the specified credentials
   mysql::db { 'kodekloud_db3':
     user     => 'kodekloud_cap',
