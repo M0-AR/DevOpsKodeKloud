@@ -1,0 +1,33 @@
+--- 
+- name: Install and configure Apache and PHP
+  hosts: stapp02 
+  become: yes
+  tasks:
+  - name: Install Apache and PHP
+    yum:
+      name:
+      - httpd
+      - php
+      state: latest 
+  - name: Change Document Root
+    replace:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^DocumentRoot (.*)$'
+      replace: 'DocumentRoot "/var/www/html/myroot"'
+  - name: Create Document Root
+    file:
+      path: /var/www/html/myroot
+      state: directory
+      owner: apache
+      group: apache
+  - name: Copy PHP Template
+    template:
+      src: ~/playbooks/templates/phpinfo.php.j2
+      dest: /var/www/html/myroot/phpinfo.php
+      owner: apache
+      group: apache
+  - name: start and enable httpd
+    service:
+      name: httpd
+      state: started 
+      enabled: yes
