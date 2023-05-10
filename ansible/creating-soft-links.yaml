@@ -46,3 +46,6 @@
       dest: /var/www/html
       state: link
     when: inventory_hostname == 'stapp03'
+
+# Create: 'ansible-playbook -i inventory playbook.yml'
+# Validate: 'ansible all -a "ls -ltr /opt/devops/" -i inventory'
