@@ -19,3 +19,5 @@ spec:
       containers:
       - name: nginx-container
         image: nginx:latest
+
+# Validate: 'kubectl exec nginx-replicationcontroller-4t9qr -- curl http://localhost'
