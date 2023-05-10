@@ -1,0 +1,48 @@
+- name: Create files and symlinks
+  hosts: all
+  become: true
+  tasks:
+  - name: Create file blog.txt on app server 1
+    file:
+      path: /opt/devops/blog.txt
+      state: touch
+      owner: tony
+      group: tony
+    when: inventory_hostname == 'stapp01'
+
+  - name: Create symlink for app server 1
+    file:
+      src: /opt/devops
+      dest: /var/www/html
+      state: link
+    when: inventory_hostname == 'stapp01'
+
+  - name: Create file story.txt on app server 2
+    file:
+      path: /opt/devops/story.txt
+      state: touch
+      owner: steve
+      group: steve
+    when: inventory_hostname == 'stapp02'
+
+  - name: Create symlink for app server 2
+    file:
+      src: /opt/devops
+      dest: /var/www/html
+      state: link
+    when: inventory_hostname == 'stapp02'
+
+  - name: Create file media.txt on app server 3
+    file:
+      path: /opt/devops/media.txt
+      state: touch
+      owner: banner
+      group: banner
+    when: inventory_hostname == 'stapp03'
+
+  - name: Create symlink for app server 3
+    file:
+      src: /opt/devops
+      dest: /var/www/html
+      state: link
+    when: inventory_hostname == 'stapp03'
