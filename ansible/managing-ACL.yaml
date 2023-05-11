@@ -45,3 +45,6 @@
         etype: group
         permissions: rw
         state: present
+
+# Run: 'ansible-playbook -i inventory playbook.yml'
+# Validate: 'ansible all -a "ls -ltr /opt/dba/" -i inventory'
