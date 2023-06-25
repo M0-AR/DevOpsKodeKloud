@@ -1,0 +1,36 @@
+---
+- name: Setup Apache web server and create index.html page
+  hosts: all
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Create facts.txt file
+      ansible.builtin.blockinfile:
+        path: /root/facts.txt
+        create: yes
+        block: |
+          Ansible managed node IP is {{ ansible_default_ipv4.address }}
+    
+    - name: Install httpd server
+      ansible.builtin.package:
+        name: httpd
+        state: present
+
+    - name: Copy facts.txt to /var/www/html/index.html
+      ansible.builtin.copy:
+        src: /root/facts.txt
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+        remote_src: yes
+
+    - name: Ensure httpd is running and enabled
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+
+# test: curl http://stapp01
+# test: curl http://stapp02
+# test: curl http://stapp03
