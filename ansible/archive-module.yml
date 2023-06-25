@@ -1,0 +1,38 @@
+---
+- name: Archive and copy data
+  hosts: stapp01, stapp02, stapp03
+  become: yes
+  tasks:
+    - name: Create an archive of /usr/src/itadmin
+      ansible.builtin.archive:
+        path: /usr/src/itadmin/
+        dest: /opt/itadmin/blog.tar.gz
+        format: gz
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Set owner and group for stapp01
+      ansible.builtin.file:
+        path: /opt/itadmin/blog.tar.gz
+        owner: tony
+        group: tony
+        state: file
+      when: "'stapp01' in inventory_hostname"
+
+    - name: Set owner and group for stapp02
+      ansible.builtin.file:
+        path: /opt/itadmin/blog.tar.gz
+        owner: steve
+        group: steve
+        state: file
+      when: "'stapp02' in inventory_hostname"
+
+    - name: Set owner and group for stapp03
+      ansible.builtin.file:
+        path: /opt/itadmin/blog.tar.gz
+        owner: banner
+        group: banner
+        state: file
+      when: "'stapp03' in inventory_hostname"
+
+# run: ansible-playbook -i inventory playbook.yml
+# test: ansible all -a "ls -ltr /opt/itadmin/" -i inventory
