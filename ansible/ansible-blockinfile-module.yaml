@@ -21,3 +21,6 @@
       owner: apache
       group: apache
       mode: '0744'
+
+# test01: ansible all -a "ls -ltr /var/www/html" -i inventory
+# test02: curl http://stapp01
