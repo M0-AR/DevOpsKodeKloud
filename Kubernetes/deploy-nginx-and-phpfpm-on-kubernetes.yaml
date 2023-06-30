@@ -60,3 +60,8 @@ spec:
       volumeMounts:
         - name: shared-files
           mountPath: /var/www/html
+
+# Validate:
+# kubectl exec -it nginx-phpfpm -- /bin/bash
+# echo "<?phpinfo();?>" > /var/www/html/index.php
+# curl http://localhost:8092
