@@ -1,0 +1,13 @@
+- name: Extract archive
+  hosts: stapp01, stapp02, stapp03
+  become: yes
+  tasks:
+    - name: Extract the archive and set owner/permissions
+      unarchive:
+        src: /usr/src/itadmin/nautilus.zip
+        dest: /opt/itadmin/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0755"
+
+# Test: ansible all -a "ls -ltr /opt/itadmin/" -i inventory
