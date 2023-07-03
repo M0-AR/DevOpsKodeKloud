@@ -1,0 +1,11 @@
+- name: Create file
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create the file and set properties
+      file:
+        path: /opt/webdata.txt
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0655"
+        state: touch
