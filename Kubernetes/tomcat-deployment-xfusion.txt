@@ -1,3 +1,5 @@
+- Create namespace 'kubectl create namespace tomcat-namespace-xfusion'
+
 - Create the tomcat-deployment-xfusion deployment with one replica
     'kubectl create deployment tomcat-deployment-xfusion --namespace=tomcat-namespace-xfusion --replicas=1 --image=gcr.io/kodekloud/centos-ssh-enabled:tomcat --port=8080 --dry-run=client -o yaml > deployment.yaml'
 
