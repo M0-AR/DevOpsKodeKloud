@@ -1,0 +1,26 @@
+To update the pod definition file to use the environment variable with the value "green" and recreate the pod, you can follow these steps:
+
+First, you need to get the YAML definition file for the existing pod. You can do this by running the following command:
+
+   - 'kubectl get pod color-app-cka13-arch -o yaml > color-app-cka13-arch.yaml'
+     This will save a copy of the [pod definition file]
+
+   - Open the color-app-cka13-arch.yaml file in a text editor and locate the containers section. 
+     Within the containers section, locate the env section and update the value field for the COLOR environment variable to "green".
+
+   - 'kubectl delete pod color-app-cka13-arch'
+     Delete the existing pod using the following command:
+
+
+   - 'kubectl apply -f color-app-cka13-arch.yaml'
+     Recreate the pod using the updated YAML file:
+
+   - 'kubectl logs -f color-app-cka13-arch'
+      Verify that the new pod is running and displaying the expected output by running the following command:
+      The output should now show "Color is green" instead of "Color is pink".
+
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- Can I update the environment variable without deleting and recreating the pod?                        #
+#########################################################################################################
