@@ -1,0 +1,27 @@
+To check if the Cronjob is running as per the required schedule, you can use the kubectl get cronjob command to see the status of the Cronjob. Run the following command:
+    - kubectl get cronjob orange-cron-cka10-trb
+    This will show you the current status of the Cronjob, including the last time it was run and any errors that may have occurred.
+
+To fix the Cronjob, you can edit it using the kubectl edit cronjob command. Run the following command:
+    - kubectl edit cronjob orange-cron-cka10-trb
+    This will open the Cronjob configuration in your default editor. Look for the spec.schedule field and 
+    make sure it is set to */2 * * * *, which will run the Cronjob every two minutes.
+
+To check if the application is accessible, you can use the kubectl port-forward command to forward traffic 
+from your local machine to the ClusterIP service running inside the orange-app-cka10-trb pod. Run the following command:
+    - kubectl port-forward svc/orange-app-cka10-trb 8080:80
+    This will forward traffic from port 8080 on your local machine to port 80 on the service. You can then open a web browser and 
+    go to http://localhost:8080 to access the application. If the application is accessible, you should see the expected content.
+
+To look for completed Cron jobs, you can use the kubectl get jobs command to see a list of all completed jobs. 
+Run the following command:
+    - kubectl get jobs
+    This will show you a list of all completed jobs, including any Cron jobs that have finished running. 
+    You can use this to check if the Cron job is running successfully and completing as expected.
+
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- How can I check if the Cronjob is passing the accessibility checks every time?                        #
+- Is there a way to receive notifications if the Cronjob fails to run or complete successfully?         #
+#########################################################################################################
