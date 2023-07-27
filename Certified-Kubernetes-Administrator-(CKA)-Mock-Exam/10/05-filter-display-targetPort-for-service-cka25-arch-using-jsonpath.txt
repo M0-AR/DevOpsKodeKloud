@@ -1,0 +1,23 @@
+To update the script /root/service-cka25-arch.sh to filter/display the targetPort only 
+for the service-cka25-arch service using jsonpath, you can follow these steps:
+
+Open the script using a text editor:
+    - sudo nano /root/service-cka25-arch.sh
+
+Add the following command to the script to display the targetPort of the service-cka25-arch service using jsonpath:
+    - kubectl get service service-cka25-arch -o=jsonpath='{.spec.ports[*].targetPort}' -n default
+
+Save the file and exit the text editor.
+
+Now, when you run the updated script /root/service-cka25-arch.sh after 
+setting the context to cluster1 using kubectl config use-context cluster1, 
+it will display the targetPort of the service-cka25-arch service using jsonpath.
+
+
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- Can you explain how the jsonpath command works?                                                       #
+- Is there a way to filter/display other information using jsonpath?                                    #
+- Can you provide an example of how to use jsonpath to filter/display multiple values?                  #
+#########################################################################################################
