@@ -1,0 +1,15 @@
+To set the context to cluster1, you can run the following command:
+    - 'kubectl config use-context cluster1'
+    
+After setting the context, you can use the following command to inspect the logs of the beta-pod-cka01-arch pod and save all logs starting with the string ERROR in the specified file:
+    - 'kubectl logs beta-pod-cka01-arch -n beta-cka01-arch | grep "^ERROR" > /root/beta-pod-cka01-arch_errors'
+
+This command will first get the logs of the beta-pod-cka01-arch pod in the beta-cka01-arch namespace using the kubectl logs command. 
+The grep command is then used to filter the logs and only keep the lines that start with "ERROR". Finally, the > operator is used 
+to redirect the output to the specified file /root/beta-pod-cka01-arch_errors on the student-node.
+
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- Is there a way to view the logs without filtering for errors?                                         #
+#########################################################################################################

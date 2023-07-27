@@ -28,10 +28,9 @@ Let's break down what each part of this command does:
 After running this command, the file /opt/high_memory_pod should contain a single line with the cluster name, namespace, 
 and pod name of the pod with the highest memory usage.
 
-###########################
-#      Future Search!     #
-###########################
-- Can you explain how to use the output in /opt/high_memory_pod to troubleshoot high memory usage?
-- Is there a way to automate running this command periodically to monitor memory usage?
-- Can you recommend any other kubectl commands for monitoring resource usage in Kubernetes?
-###########################
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- Is there a way to automate running this command periodically to monitor memory usage?                 #
+- Can you recommend any other kubectl commands for monitoring resource usage in Kubernetes?             #
+#########################################################################################################
