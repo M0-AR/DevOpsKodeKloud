@@ -1,0 +1,34 @@
+The errors you're seeing indicate that the YAML file at /root/red-probe-cka12-trb.yaml has an invalid configuration for 
+the livenessProbe.httpGet. The httpGet probe does not have a field named command, and it is missing a required field port.
+
+To fix these errors, you need to modify the livenessProbe section in your YAML file. Below is an example of how it could look:
+    - livenessProbe:
+        httpGet:
+            path: /healthz
+            port: 8080
+
+Open the YAML file with a text editor:
+    - nano /root/red-probe-cka12-trb.yaml
+
+Locate the livenessProbe section and correct it, 
+removing the command field and adding the port field under httpGet.
+
+Save the changes and exit the text editor.
+
+Once you've made these changes, you can try to create the pod again:
+    - kubectl create -f /root/red-probe-cka12-trb.yaml
+
+Now the pod should be created successfully. 
+If the pod is still not stable, you can describe the pod to check its events and see if there are any issues:
+
+kubectl describe pod <pod-name>
+Replace <pod-name> with the name of the pod you just created. 
+Look at the events at the bottom of the describe output to see if there are any issues causing the pod to not be stable.
+
+
+#########################################################################################################
+#                                            Future Search!                                             #
+#########################################################################################################
+- What are some common causes of pods constantly restarting or crashing?                                #
+- How can I troubleshoot issues with my pod if it's still not stable?                                   #
+#########################################################################################################
