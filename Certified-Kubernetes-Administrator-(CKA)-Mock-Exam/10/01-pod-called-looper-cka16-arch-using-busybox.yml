@@ -1,0 +1,22 @@
+# To set the context to cluster3, you can use the following command: 
+#   - 'kubectl config use-context cluster3'
+
+# Once you have set the context to cluster3, you can create a pod called looper-cka16-arch using the busybox image with the following YAML manifest:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: looper-cka16-arch
+  namespace: default
+spec:
+  containers:
+  - name: looper
+    image: busybox
+    command: ["/bin/sh", "-c", "while true; do echo hello; sleep 10; done"]
+
+# You can save this YAML to a file, say looper.yaml, and create the pod using the command:
+  # - 'kubectl apply -f looper.yaml'
+
+# This will create a pod named looper-cka16-arch in the default namespace that runs the specified while loop and prints hello every 10 seconds. To check the status of the pod, you can use the command:
+  # - 'kubectl get pods looper-cka16-arch'
+# This will show you the current status of the pod. If the pod is running, you should see Running in the STATUS column.
