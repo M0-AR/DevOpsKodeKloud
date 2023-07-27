@@ -1,0 +1,37 @@
+To find the pod that consumes the most memory across all clusters and namespaces on the student-node, 
+you can use the kubectl command along with some Unix shell commands to parse the output and extract the relevant information.
+
+    Here's an example command that should do the job:
+
+        - 'kubectl get pods --all-namespaces -o 'custom-columns=CLUSTER:.metadata.clusterName,NAMESPACE:.metadata.namespace,
+           POD:.metadata.name,CONTAINERS:.spec.containers[*].name,MEMORY:.spec.containers[*].resources.limits.memory' | 
+           awk '$5 != ""' | sort -k5 -h | tail -n1 | awk '{print $1","$2","$3}' > /opt/high_memory_pod'
+
+Let's break down what each part of this command does:
+
+   - kubectl get pods --all-namespaces -o 'custom-columns=CLUSTER:.metadata.clusterName,NAMESPACE:.metadata.namespace,POD:
+    .metadata.name,CONTAINERS:.spec.containers[*].name,MEMORY:.spec.containers[*].resources.limits.memory': 
+    This command gets a list of all pods in all namespaces across all clusters, and formats the output as a custom table with 
+    columns for the cluster name, namespace, pod name, container name, and memory limit. The [*] notation is used to extract the 
+    memory limit for all containers in each pod.
+
+   - awk '$5 != ""': This command filters out any pods that do not have a memory limit set, since we only want to consider pods that are using memory.
+
+   - sort -k5 -h: This command sorts the pods by their memory limit, using a human-readable format (e.g. "1Gi" instead of "1073741824").
+
+   - tail -n1: This command selects the pod with the highest memory limit, which will be the last line of the sorted output.
+
+   - awk '{print $1","$2","$3}': This command extracts the cluster name, namespace, and pod name from the selected line, and formats them as a comma-separated string.
+
+   - > /opt/high_memory_pod: This command redirects the output to the file /opt/high_memory_pod.
+
+After running this command, the file /opt/high_memory_pod should contain a single line with the cluster name, namespace, 
+and pod name of the pod with the highest memory usage.
+
+###########################
+#      Future Search!     #
+###########################
+- Can you explain how to use the output in /opt/high_memory_pod to troubleshoot high memory usage?
+- Is there a way to automate running this command periodically to monitor memory usage?
+- Can you recommend any other kubectl commands for monitoring resource usage in Kubernetes?
+###########################
