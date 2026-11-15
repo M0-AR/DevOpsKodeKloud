@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Artifact Explorer — DevOps Field Manual</title>
+<meta name="description" content="Search and read all 67 Kubernetes, Ansible, Puppet, CKA, and CKS artifacts in the DevOps Field Manual. Copy, download, and follow each file to a related practice question.">
+<link rel="canonical" href="https://m0-ar.github.io/DevOpsKodeKloud/explorer.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Artifact Explorer — DevOps Field Manual">
+<meta property="og:description" content="Every manifest, playbook, and exam note in one searchable, readable interface.">
+<meta property="og:image" content="https://m0-ar.github.io/DevOpsKodeKloud/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg>
+      </span>
+      <span>DevOps Field Manual<small>M0-AR / interactive edition</small></span>
+    </a>
+    <button class="menu-btn" type="button" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./explorer.html" aria-current="page">Explorer</a>
+      <a href="./lab.html">Lab</a>
+      <a href="./quiz.html">Quiz</a>
+      <a href="./atlas.html">3D Atlas</a>
+      <a href="./game.html">Game</a>
+      <a href="./cheatsheet.html">Cheat sheet</a>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-github" href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener" aria-label="View source on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.66.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+      </a>
+      <a class="btn btn-primary btn-sm" href="./quiz.html">Start practising</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container-wide">
+      <div class="eyebrow">Artifact explorer</div>
+      <h1>Every file. Every line. <span class="gradient-text">Readable.</span></h1>
+      <p>67 real Kubernetes, Ansible, Puppet, CKA, and CKS artifacts. Search by concept, filter by level, copy the exact manifest, and jump straight into a related practice question. Nothing is rewritten or hidden.</p>
+      <div class="page-actions">
+        <span class="pill"><span class="dot" aria-hidden="true"></span><span id="artifact-total">Loading artifacts…</span></span>
+        <span class="pill"><span class="mono" id="artifact-lines">—</span> lines indexed</span>
+        <a class="btn btn-ghost btn-sm" href="./cheatsheet.html">Open command cheat sheet</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-main">
+    <div class="container-wide">
+      <div class="toolbar">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label class="sr-only" for="search">Search artifacts</label>
+          <input id="search" type="search" placeholder="Search pods, cronjob, ACL, apparmor…  (press /)" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="chips" id="category-chips" role="group" aria-label="Filter by category"></div>
+        <label class="sr-only" for="level">Filter by level</label>
+        <select class="select" id="level">
+          <option value="all">All levels</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <label class="sr-only" for="sort">Sort artifacts</label>
+        <select class="select" id="sort">
+          <option value="path">Path A–Z</option>
+          <option value="title">Title A–Z</option>
+          <option value="lines">Longest first</option>
+        </select>
+      </div>
+
+      <div class="explorer-layout">
+        <aside class="panel side-panel" aria-label="Artifact tree">
+          <div class="panel-head"><h2>Repository tree</h2><span class="spacer"></span><span class="explorer-count" id="tree-count"></span></div>
+          <div id="tree"></div>
+        </aside>
+
+        <div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Artifacts</h2>
+              <span class="explorer-count" id="result-count">—</span>
+              <span class="spacer"></span>
+              <button class="btn btn-ghost btn-sm" type="button" id="clear-filters">Reset filters</button>
+            </div>
+            <div class="panel-body">
+              <div class="artifact-grid" id="artifact-list" role="list"></div>
+              <div class="empty-state" id="empty" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                No artifacts match those filters. Try a broader term or reset.
+              </div>
+            </div>
+          </div>
+
+          <div class="panel viewer" id="viewer" hidden>
+            <div class="viewer-head">
+              <div>
+                <h2 id="viewer-title">—</h2>
+                <div class="path" id="viewer-path">—</div>
+              </div>
+              <div class="viewer-actions">
+                <a class="btn btn-ghost btn-sm" id="viewer-github" href="#" target="_blank" rel="noopener">View on GitHub</a>
+                <button class="btn btn-ghost btn-sm" type="button" id="viewer-download">Download</button>
+                <button class="btn btn-primary btn-sm" type="button" id="viewer-copy">Copy file</button>
+              </div>
+            </div>
+            <div class="viewer-desc">
+              <p id="viewer-desc">—</p>
+              <div class="tags" id="viewer-tags"></div>
+            </div>
+            <div id="viewer-note"></div>
+            <div id="viewer-validations"></div>
+            <div class="code-wrap">
+              <div class="code-toolbar"><span class="lang" id="viewer-lang">yaml</span><span class="faint mono" id="viewer-lines"></span></div>
+              <pre class="code-block" tabindex="0" aria-label="File contents"><code id="viewer-code"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="./index.html">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg></span>
+          <span>DevOps Field Manual<small>M0-AR / interactive edition</small></span>
+        </a>
+        <p>A browser-native field manual for people who learn by doing. Local-first progress, no account, no tracking.</p>
+      </div>
+      <div class="footer-col"><h4>Learn</h4><a href="./explorer.html">Artifact explorer</a><a href="./lab.html">Practice lab</a><a href="./quiz.html">Question bank</a><a href="./cheatsheet.html">Cheat sheet</a></div>
+      <div class="footer-col"><h4>Explore</h4><a href="./atlas.html">3D concept atlas</a><a href="./game.html">Cluster Runner</a><a href="./index.html#live-demo">Live demo</a><a href="./index.html#learning-paths">Learning paths</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener">GitHub repository</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/releases" target="_blank" rel="noopener">Releases</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/blob/master/LICENSE" target="_blank" rel="noopener">MIT license</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/issues" target="_blank" rel="noopener">Report an issue</a></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> M0-AR. Independent educational project.</span><span>Not affiliated with KodeKloud, the CNCF, or the vendors named in the artifacts.</span></div>
+  </div>
+</footer>
+
+<script src="./assets/js/site.js" defer></script>
+<script src="./assets/js/explorer.js" defer></script>
+</body>
+</html>

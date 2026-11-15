@@ -1,0 +1,416 @@
+{
+  "ansible/ansible-blockinfile-module.yaml": {
+    "title": "Manage a marked block with blockinfile",
+    "description": "Installs Apache, starts the service, and writes a managed, marker-delimited block into index.html so repeated runs stay idempotent.",
+    "tags": ["apache", "blockinfile", "idempotency"],
+    "level": "beginner"
+  },
+  "ansible/ansible-lineinfile-module.yaml": {
+    "title": "Insert one line with lineinfile",
+    "description": "Provisions Apache and uses lineinfile to guarantee a single line exists in index.html without duplicating it.",
+    "tags": ["apache", "lineinfile", "idempotency"],
+    "level": "beginner"
+  },
+  "ansible/ansible-setup-httpd-and-php.yaml": {
+    "title": "Apache + PHP with templates and replace",
+    "description": "Installs httpd and PHP, then combines the replace and template modules to render a host-specific web page.",
+    "tags": ["apache", "php", "template", "replace"],
+    "level": "intermediate"
+  },
+  "ansible/ansible-unarchive-module.yml": {
+    "title": "Extract an archive with unarchive",
+    "description": "Downloads or references a zip archive and extracts it to a target directory using the unarchive module.",
+    "tags": ["unarchive", "files"],
+    "level": "beginner"
+  },
+  "ansible/archive-module.yml": {
+    "title": "Create a tar.gz with conditional ownership",
+    "description": "Archives a directory into tar.gz and sets ownership differently depending on which host the play runs against.",
+    "tags": ["archive", "conditionals", "files"],
+    "level": "intermediate"
+  },
+  "ansible/basic-playbook.yml": {
+    "title": "Create and verify a file in two plays",
+    "description": "A two-play walkthrough: touch /tmp/file.txt, then run a validation play that registers and prints the result.",
+    "tags": ["file", "register", "debug"],
+    "level": "beginner"
+  },
+  "ansible/copy-module.yml": {
+    "title": "Copy a file to managed hosts",
+    "description": "The smallest useful copy-module example: move a local file to a destination on every targeted host.",
+    "tags": ["copy", "files"],
+    "level": "beginner"
+  },
+  "ansible/create-blank-file-on-servers.yaml": {
+    "title": "Create a blank file with owner and mode",
+    "description": "Creates a file on managed nodes and sets ownership and permissions in the same declarative task.",
+    "tags": ["file", "permissions"],
+    "level": "beginner"
+  },
+  "ansible/create-users-and-groups.yaml": {
+    "title": "Create groups and users with hashed passwords",
+    "description": "Creates admins and developers groups, then loops over users with password_hash, custom homes, and group membership.",
+    "tags": ["users", "groups", "loop", "security"],
+    "level": "intermediate",
+    "modernization": "password_hash without an explicit salt produces a different hash on every run, so this task is not idempotent. Supply a stable salt and keep secrets in Ansible Vault rather than in the playbook."
+  },
+  "ansible/creating-soft-links.yaml": {
+    "title": "Per-host files and symlinks with when",
+    "description": "Uses inventory_hostname conditionals to create a different file and symlink on each app server.",
+    "tags": ["symlink", "conditionals", "inventory"],
+    "level": "intermediate"
+  },
+  "ansible/facts-gathering.yml": {
+    "title": "Render host facts into a web page",
+    "description": "Reads gathered facts and templates the node's IP address into index.html, showing how facts drive dynamic configuration.",
+    "tags": ["facts", "template", "apache"],
+    "level": "intermediate"
+  },
+  "ansible/file-module.yml": {
+    "title": "Create a file with strict ownership",
+    "description": "A focused file-module example that creates a path with explicit owner, group, and mode.",
+    "tags": ["file", "permissions"],
+    "level": "beginner"
+  },
+  "ansible/managing-ACL.yaml": {
+    "title": "Set POSIX ACLs across three hosts",
+    "description": "Creates files and applies per-user and per-group ACL entries on different hosts using the acl module.",
+    "tags": ["acl", "permissions", "security"],
+    "level": "intermediate"
+  },
+  "ansible/replace-module.yml": {
+    "title": "Find and replace text safely",
+    "description": "Uses the replace module to change a string in a file while keeping the operation repeatable.",
+    "tags": ["replace", "files"],
+    "level": "beginner"
+  },
+  "ansible/using-ansible-conditionals.yaml": {
+    "title": "Route different files by hostname",
+    "description": "Copies a different source file to different servers using when conditions on the inventory hostname.",
+    "tags": ["conditionals", "copy", "inventory"],
+    "level": "beginner"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/01-pod-called-looper-cka16-arch-using-busybox.yml": {
+    "title": "CKA task: pod named looper",
+    "description": "Manifest for a BusyBox pod that runs a continuous loop, mirroring an exam-style imperative-to-declarative task.",
+    "tags": ["cka", "pod", "busybox"],
+    "level": "beginner"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/02-pod-consumes-most-memory-across-all-clusters.txt": {
+    "title": "CKA task: find the top memory consumer",
+    "description": "Walks through finding the pod with the highest memory use across all namespaces using kubectl top and JSON output.",
+    "tags": ["cka", "kubectl", "metrics", "jsonpath"],
+    "level": "advanced"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/03-inspect-save-logs-of-pod-with-string-ERROR.txt": {
+    "title": "CKA task: save logs containing ERROR",
+    "description": "Shows how to filter pod logs for a string and save the matching lines to a file for evidence.",
+    "tags": ["cka", "logs", "grep"],
+    "level": "intermediate"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/04-update-environment-variable-in-pod.txt": {
+    "title": "CKA task: update a pod environment variable",
+    "description": "Exports a running pod, changes an env value, recreates the pod, and verifies the new output through logs.",
+    "tags": ["cka", "env", "pods"],
+    "level": "intermediate"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/05-filter-display-targetPort-for-service-cka25-arch-using-jsonpath.txt": {
+    "title": "CKA task: extract targetPort with jsonpath",
+    "description": "Uses a custom-columns/jsonpath query to display only a Service's targetPort without extra output.",
+    "tags": ["cka", "jsonpath", "service"],
+    "level": "advanced"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/06-check-cronjob-running-per-required-schedule.txt": {
+    "title": "CKA task: repair a CronJob schedule",
+    "description": "Inspects a CronJob, fixes its schedule to every two minutes, checks Jobs, and verifies the app with port-forward.",
+    "tags": ["cka", "cronjob", "port-forward"],
+    "level": "advanced"
+  },
+  "Certified-Kubernetes-Administrator-(CKA)-Mock-Exam/10/07-fix-issue-with-template.txt": {
+    "title": "CKA task: fix a broken livenessProbe",
+    "description": "Diagnoses an invalid httpGet probe, removes the illegal command field, adds the required port, and verifies the pod.",
+    "tags": ["cka", "probes", "troubleshooting"],
+    "level": "advanced"
+  },
+  "CKS-Challenges/scan_images_and_deploy.sh": {
+    "title": "CKS challenge: least-vulnerable image + AppArmor",
+    "description": "Scans images with Trivy, picks the image with the fewest critical findings, deploys it with an AppArmor profile, and exposes it.",
+    "tags": ["cks", "trivy", "apparmor", "supply-chain"],
+    "level": "advanced",
+    "modernization": "The generated manifest omits apiVersion and kind, and appArmorProfile belongs in securityContext.appArmorProfile (type: Localhost, localhostProfile: custom-nginx) on modern Kubernetes. The stated requirement to allow only the middleware pod also needs a NetworkPolicy; the Service alone does not enforce it."
+  },
+  "deploy-guest-book-app-on-kubernetes/front-end-deploy-redis-php.yml": {
+    "title": "Guestbook: PHP frontend Deployment",
+    "description": "Three-replica frontend Deployment with resource requests and GET_HOSTS_FROM=dns for service discovery.",
+    "tags": ["guestbook", "deployment", "php"],
+    "level": "intermediate",
+    "modernization": "The gcr.io/google-samples image is a historic sample. Verify it still pulls and pin it by digest for reproducible deployments."
+  },
+  "deploy-guest-book-app-on-kubernetes/front-end-service-redis-php.yml": {
+    "title": "Guestbook: frontend NodePort Service",
+    "description": "Exposes the guestbook frontend outside the cluster through a NodePort service.",
+    "tags": ["guestbook", "service", "nodeport"],
+    "level": "beginner"
+  },
+  "deploy-guest-book-app-on-kubernetes/redis-master-deplo.yml": {
+    "title": "Guestbook: Redis master Deployment",
+    "description": "Runs the Redis master that stores guestbook entries, with the canonical labels used by the frontend.",
+    "tags": ["guestbook", "redis", "deployment"],
+    "level": "intermediate"
+  },
+  "deploy-guest-book-app-on-kubernetes/redis-master-service.yml": {
+    "title": "Guestbook: Redis master Service",
+    "description": "ClusterIP service that gives the frontend a stable DNS name for the Redis master.",
+    "tags": ["guestbook", "redis", "service"],
+    "level": "beginner"
+  },
+  "deploy-guest-book-app-on-kubernetes/redis-slave-deplo.yml": {
+    "title": "Guestbook: Redis replica Deployment",
+    "description": "Runs Redis replicas that follow the master, demonstrating a read-scaling tier.",
+    "tags": ["guestbook", "redis", "replicas"],
+    "level": "intermediate"
+  },
+  "deploy-guest-book-app-on-kubernetes/redis-slave-service.yml": {
+    "title": "Guestbook: Redis replica Service",
+    "description": "ClusterIP service that load-balances reads across the Redis replica pods.",
+    "tags": ["guestbook", "redis", "service"],
+    "level": "beginner"
+  },
+  "Kubernetes/countdown.yaml": {
+    "title": "Job: countdown to completion",
+    "description": "A batch Job that runs a short countdown and exits, the simplest way to see run-to-completion semantics.",
+    "tags": ["job", "batch", "pods"],
+    "level": "beginner"
+  },
+  "Kubernetes/create-namespaces-in-kubernetes-cluster.yaml": {
+    "title": "Create a namespace and a pod",
+    "description": "Defines a dedicated namespace plus a pod inside it, showing how names scope cluster objects.",
+    "tags": ["namespace", "pod"],
+    "level": "beginner"
+  },
+  "Kubernetes/create-pods-in-kubernetes.sh": {
+    "title": "Create a pod imperatively",
+    "description": "A one-command kubectl run example for creating a pod without a manifest, useful for fast experiments.",
+    "tags": ["kubectl", "pod", "imperative"],
+    "level": "beginner"
+  },
+  "Kubernetes/create-replicaset-in-kubernetes-cluster.yaml": {
+    "title": "ReplicaSet with a pod template",
+    "description": "Maintains a fixed number of identical pods through a selector and template, the layer beneath a Deployment.",
+    "tags": ["replicaset", "selector"],
+    "level": "intermediate"
+  },
+  "Kubernetes/deploy nginx-web-server-on-kubernetes-cluster.yaml": {
+    "title": "Deploy NGINX with a NodePort",
+    "description": "A Deployment plus NodePort Service that makes NGINX reachable on a fixed port from outside the cluster.",
+    "tags": ["nginx", "deployment", "nodeport"],
+    "level": "beginner"
+  },
+  "Kubernetes/deploy-apache-web-server-on-kubernetes-cLuster.yaml": {
+    "title": "Deploy Apache with a NodePort",
+    "description": "Runs Apache httpd in a Deployment and exposes it through a NodePort service.",
+    "tags": ["apache", "deployment", "nodeport"],
+    "level": "beginner"
+  },
+  "Kubernetes/deploy-grafana-on-kubernetes-cluster.yaml": {
+    "title": "Deploy Grafana",
+    "description": "A compact Grafana Deployment and Service, ready to point at a metrics backend.",
+    "tags": ["grafana", "observability", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/deploy-jenkins-on-kubernetes.yaml": {
+    "title": "Deploy Jenkins",
+    "description": "Runs Jenkins as a Kubernetes Deployment and exposes its UI through a NodePort.",
+    "tags": ["jenkins", "ci-cd", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/deploy-mysql-on-kubernetes.yaml": {
+    "title": "MySQL with PV, PVC, Secrets and Service",
+    "description": "A full stateful example: persistent volume and claim, secret-driven credentials, Deployment, and NodePort service.",
+    "tags": ["mysql", "persistence", "secrets", "stateful"],
+    "level": "advanced",
+    "modernization": "MySQL 5.7 is end-of-life. The Secret values are placeholders ('?') and must be base64-encoded before applying. In production, use an external secret store and a StatefulSet rather than a single-replica Deployment."
+  },
+  "Kubernetes/deploy-nagios-on-kubernetes.yaml": {
+    "title": "Deploy Nagios",
+    "description": "Runs Nagios in a Deployment and exposes the monitoring UI via NodePort.",
+    "tags": ["nagios", "monitoring", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/deploy-nginx-and-phpfpm-on-kubernetes.yaml": {
+    "title": "NGINX + PHP-FPM in one pod",
+    "description": "A multi-container pod sharing an emptyDir, with NGINX configured through a ConfigMap and PHP-FPM served over localhost.",
+    "tags": ["nginx", "php", "configmap", "multi-container"],
+    "level": "advanced",
+    "modernization": "php:7.3-fpm is end-of-life and nginx:latest is unpinned. Use supported, pinned images and add readiness/liveness probes before production use."
+  },
+  "Kubernetes/deploy-node-app-on-kubernetes.yaml": {
+    "title": "Deploy a Node.js application",
+    "description": "A Node.js Deployment and Service pair that illustrates the standard app-on-Kubernetes shape.",
+    "tags": ["nodejs", "deployment", "service"],
+    "level": "intermediate"
+  },
+  "Kubernetes/deploy-tomcat-app.yml": {
+    "title": "Deploy Tomcat",
+    "description": "A Tomcat Deployment that packages a Java web app into a reproducible pod template.",
+    "tags": ["tomcat", "java", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/init-containers.yml": {
+    "title": "Init container writes, main container reads",
+    "description": "An init container prepares a file on a shared volume before the main container starts and tails it.",
+    "tags": ["init-container", "volumes", "lifecycle"],
+    "level": "advanced",
+    "modernization": "centos:latest is unpinned and CentOS Linux is end-of-life. Prefer a maintained base image pinned by digest."
+  },
+  "Kubernetes/kubernetes-cronjob.yml": {
+    "title": "CronJob every eleven minutes",
+    "description": "A scheduled batch workload that runs on a cron expression and keeps job history for inspection.",
+    "tags": ["cronjob", "schedule", "batch"],
+    "level": "intermediate",
+    "modernization": "batch/v1beta1 was removed in Kubernetes 1.25. Change apiVersion to batch/v1, pin the image, and fix the 'Welocme' typo in the echoed message."
+  },
+  "Kubernetes/kubernetes-environment-variables.yml": {
+    "title": "Expose pod metadata as environment variables",
+    "description": "Uses the downward API to inject pod name, namespace, and node information into the container environment.",
+    "tags": ["downward-api", "env", "metadata"],
+    "level": "intermediate"
+  },
+  "Kubernetes/kubernetes-persistent-volumes.yml": {
+    "title": "PV, PVC, Pod and Service end to end",
+    "description": "A complete storage path: static PV, matching claim, a pod that mounts it, and a service that exposes the result.",
+    "tags": ["persistence", "pv", "pvc", "service"],
+    "level": "advanced"
+  },
+  "Kubernetes/kubernetes-redis-deployment.yml": {
+    "title": "Redis with ConfigMap-driven config",
+    "description": "Deploys Redis and mounts a ConfigMap as its configuration file, separating config from image.",
+    "tags": ["redis", "configmap", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/kubernetes-shared-volumes.yml": {
+    "title": "Two containers sharing a volume",
+    "description": "Demonstrates an emptyDir shared by two containers in the same pod, the basis of many sidecar patterns.",
+    "tags": ["volumes", "emptyDir", "multi-container"],
+    "level": "intermediate"
+  },
+  "Kubernetes/kubernetes-time-check-pod.yaml": {
+    "title": "ConfigMap-driven time check pod",
+    "description": "Injects a timezone value from a ConfigMap into a pod's environment and uses it in the container command.",
+    "tags": ["configmap", "env", "pod"],
+    "level": "beginner"
+  },
+  "Kubernetes/print-environment-variables.yaml": {
+    "title": "Print environment variables from a pod",
+    "description": "A minimal pod for observing how env entries arrive inside a container, handy for debugging.",
+    "tags": ["env", "debug", "pod"],
+    "level": "beginner"
+  },
+  "Kubernetes/replication-controller-in-kubernetes.yaml": {
+    "title": "Legacy ReplicationController",
+    "description": "An example of the original replication primitive, useful for reading older clusters and manifests.",
+    "tags": ["replicationcontroller", "legacy"],
+    "level": "intermediate",
+    "modernization": "ReplicationController is legacy. New workloads should use a Deployment, which manages ReplicaSets and supports rollout history."
+  },
+  "Kubernetes/rolling-update.txt": {
+    "title": "Rolling update and rollback walkthrough",
+    "description": "Step-by-step commands for updating a Deployment image, watching the rollout, and reverting cleanly.",
+    "tags": ["rollout", "rollback", "deployment"],
+    "level": "intermediate"
+  },
+  "Kubernetes/rolling-updates-and-rolling-back-deployments.sh": {
+    "title": "Automated rollout and rollback script",
+    "description": "A shell script that creates a Deployment, performs an image update, observes status, and rolls back on demand.",
+    "tags": ["rollout", "rollback", "script"],
+    "level": "advanced"
+  },
+  "Kubernetes/sidecar-containers.yaml": {
+    "title": "Sidecar log shipper",
+    "description": "NGINX and a sidecar share a log volume while the sidecar continuously tails and forwards access and error logs.",
+    "tags": ["sidecar", "logging", "volumes"],
+    "level": "advanced"
+  },
+  "Kubernetes/tomcat-deployment-xfusion.txt": {
+    "title": "Tomcat deployment step by step",
+    "description": "A guided sequence for deploying Tomcat and verifying the running application.",
+    "tags": ["tomcat", "deployment", "walkthrough"],
+    "level": "intermediate"
+  },
+  "Kubernetes/troubleshooting-fix-YAML-indentation.yml": {
+    "title": "Troubleshooting: corrected MySQL YAML",
+    "description": "A repaired MySQL stack used to practise spotting indentation faults across PV, PVC, Service, and Deployment.",
+    "tags": ["troubleshooting", "yaml", "mysql"],
+    "level": "advanced",
+    "modernization": "The Service selector uses app: mysql_app while the Deployment labels app: mysql-app, so no endpoints will be selected. Align the selector and the pod labels."
+  },
+  "puppet/add-users.pp": {
+    "title": "Create a user with Puppet",
+    "description": "Declares a user resource on a specific node, the smallest unit of Puppet configuration management.",
+    "tags": ["user", "resource", "node"],
+    "level": "beginner"
+  },
+  "puppet/create-symlinks.pp": {
+    "title": "Create a file and a symlink",
+    "description": "Uses file resources to create a target file and a symbolic link pointing at it.",
+    "tags": ["file", "symlink"],
+    "level": "beginner"
+  },
+  "puppet/install-package.pp": {
+    "title": "Install NGINX",
+    "description": "A declarative package resource that guarantees NGINX is installed.",
+    "tags": ["package", "nginx"],
+    "level": "beginner"
+  },
+  "puppet/manage-services.pp": {
+    "title": "Install and run Tomcat",
+    "description": "Combines package and service resources so Tomcat is installed, running, and enabled at boot.",
+    "tags": ["package", "service", "tomcat"],
+    "level": "beginner"
+  },
+  "puppet/multi-packages.pp": {
+    "title": "Install several packages",
+    "description": "Loops over a package list to install vim-enhanced and zip in one declaration.",
+    "tags": ["package", "loop"],
+    "level": "beginner"
+  },
+  "puppet/replace-string.pp": {
+    "title": "Replace a line with file_line",
+    "description": "Uses the stdlib file_line resource to guarantee a specific line exists in a file.",
+    "tags": ["file_line", "stdlib"],
+    "level": "intermediate"
+  },
+  "puppet/setup-NTP-server.pp": {
+    "title": "Configure an NTP client",
+    "description": "Declares the NTP service and configuration so time stays synchronised across the fleet.",
+    "tags": ["ntp", "service", "config"],
+    "level": "intermediate"
+  },
+  "puppet/setup-database.pp": {
+    "title": "Provision MariaDB and a database",
+    "description": "Installs MariaDB, guarantees the service, then uses mysql::db to create a database, user, and grants.",
+    "tags": ["mariadb", "database", "mysql"],
+    "level": "advanced",
+    "modernization": "Credentials are stored in plain text in the manifest. Move them to Hiera with eyaml or an external secret store, and pin the mysql module version."
+  },
+  "puppet/setup-file-permissions.pp": {
+    "title": "Write a file with exact permissions",
+    "description": "Creates a file with explicit content, owner, group, and mode in a single resource.",
+    "tags": ["file", "permissions"],
+    "level": "beginner"
+  },
+  "puppet/setup-ssh-keys.pp": {
+    "title": "Manage SSH authorized keys",
+    "description": "Defines per-node classes that install an SSH public key for three different users.",
+    "tags": ["ssh", "authorized-key", "users"],
+    "level": "intermediate",
+    "modernization": "The public key variable is empty and this file duplicates setup-ssh-keys-01.pp. Supply the real key from Hiera and keep one canonical manifest."
+  },
+  "puppet/setup-ssh-keys-01.pp": {
+    "title": "SSH authorized keys (duplicate variant)",
+    "description": "A near-identical variant of the SSH key manifest kept for comparison; the two files differ only slightly.",
+    "tags": ["ssh", "authorized-key", "duplicate"],
+    "level": "intermediate",
+    "modernization": "This file duplicates setup-ssh-keys.pp. Consolidate them into one parameterised class to avoid drift."
+  }
+}

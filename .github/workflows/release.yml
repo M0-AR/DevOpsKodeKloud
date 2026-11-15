@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Rebuild and validate
+        run: |
+          node tools/build-site-data.mjs
+          node tools/validate-site.mjs
+
+      - name: Package the static site
+        run: |
+          cd docs
+          zip -qr "../DevOpsKodeKloud-docs-${GITHUB_REF_NAME}.zip" .
+          cd ..
+          sha256sum "DevOpsKodeKloud-docs-${GITHUB_REF_NAME}.zip" > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: DevOps Field Manual ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            DevOpsKodeKloud-docs-${{ github.ref_name }}.zip
+            SHA256SUMS.txt
+          body: |
+            ## DevOps Field Manual ${{ github.ref_name }}
+
+            The complete interactive site, packaged as a static archive.
+
+            ### Assets
+            - `DevOpsKodeKloud-docs-${{ github.ref_name }}.zip` — every page, script, dataset, screenshot, GIF and demo video.
+            - `SHA256SUMS.txt` — verify the archive before you serve it.
+
+            ### Run it
+            ```bash
+            unzip DevOpsKodeKloud-docs-${{ github.ref_name }}.zip -d field-manual
+            python3 -m http.server 8899 --directory field-manual
+            ```
+
+            The same commit is published as a container image:
+            `ghcr.io/m0-ar/devopskodekloud:${{ github.ref_name }}`
+
+            Full changelog: [CHANGELOG.md](https://github.com/M0-AR/DevOpsKodeKloud/blob/master/CHANGELOG.md)

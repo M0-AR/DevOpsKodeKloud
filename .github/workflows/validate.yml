@@ -1,0 +1,46 @@
+name: Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Rebuild generated data
+        run: node tools/build-site-data.mjs
+
+      - name: Fail if generated data is stale
+        run: git diff --exit-code -- docs/assets/data
+
+      - name: Validate artifacts, labs, questions, pages and links
+        run: node tools/validate-site.mjs
+
+      - name: Syntax-check browser modules
+        run: |
+          for file in docs/assets/js/*.js; do
+            node --check "$file"
+          done
+
+      - name: Confirm required community files
+        run: |
+          test -s README.md
+          test -s LICENSE
+          test -s CONTRIBUTING.md
+          test -s CODE_OF_CONDUCT.md
+          test -s SECURITY.md
+          test -s CHANGELOG.md

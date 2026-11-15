@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Cluster Runner — a 3D DevOps game with a neural map</title>
+<meta name="description" content="Fly a 3D cluster, collect concepts, dodge failing pods, answer checkpoints, and watch a neural map grow while the game explains what you learned.">
+<link rel="canonical" href="https://m0-ar.github.io/DevOpsKodeKloud/game.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cluster Runner — a 3D DevOps game">
+<meta property="og:description" content="Collect concepts, dodge failing pods, answer checkpoints, and build a neural map of DevOps as you play.">
+<meta property="og:image" content="https://m0-ar.github.io/DevOpsKodeKloud/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg></span><span>DevOps Field Manual<small>M0-AR / interactive edition</small></span></a>
+    <button class="menu-btn" type="button" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="nav-links" id="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./explorer.html">Explorer</a>
+      <a href="./lab.html">Lab</a>
+      <a href="./quiz.html">Quiz</a>
+      <a href="./atlas.html">3D Atlas</a>
+      <a href="./game.html" aria-current="page">Game</a>
+      <a href="./cheatsheet.html">Cheat sheet</a>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-github" href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener" aria-label="View source on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.66.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg></a>
+      <a class="btn btn-primary btn-sm" href="./quiz.html">Test yourself</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container-wide">
+      <div class="eyebrow">Cluster Runner · 3D</div>
+      <h1>Play the cluster. <span class="gradient-text">Build the brain.</span></h1>
+      <p>Fly through a live 3D cluster. Collect concepts, dodge failing pods, answer checkpoint questions, and watch a neural map grow as the game explains each idea out loud. It is revision disguised as play.</p>
+      <div class="page-actions">
+        <span class="pill"><span class="mono" id="game-best">0</span> local best</span>
+        <span class="pill"><span class="dot" aria-hidden="true"></span>Voice narration</span>
+        <button class="btn btn-ghost btn-sm" type="button" id="focus-game">Jump to the game</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-main" id="game-app">
+    <div class="container-wide">
+      <div class="game-layout">
+        <div>
+          <div class="game-stage">
+            <canvas class="game-canvas" id="game-canvas" aria-label="Cluster Runner 3D game. Use arrow keys or A and D to change lanes."></canvas>
+            <div class="game-hud" aria-hidden="true">
+              <div class="hud-group">
+                <span class="hud-item">SCORE <b id="hud-score">0</b></span>
+                <span class="hud-item">LEVEL <b id="hud-level">1</b></span>
+                <span class="hud-item lives">LIVES <b id="hud-lives">●●●</b></span>
+              </div>
+              <div class="hud-group">
+                <span class="hud-item">CONCEPTS <b id="hud-concepts">0</b></span>
+                <span class="hud-item" id="hud-shield" hidden>SHIELD <b>ON</b></span>
+              </div>
+            </div>
+
+            <div class="game-overlay" id="game-start">
+              <div class="game-card">
+                <div class="eyebrow" style="justify-content:center">Ready</div>
+                <h2>Cluster Runner</h2>
+                <p>You are the scheduler. Collect glowing concept orbs, avoid failing pods, and answer a checkpoint every four concepts. The neural map on the right is your memory forming.</p>
+                <div class="controls">
+                  <span><span class="kbd">←</span><span class="kbd">→</span> move</span>
+                  <span><span class="kbd">A</span><span class="kbd">D</span> move</span>
+                  <span><span class="kbd">P</span> pause</span>
+                  <span><span class="kbd">M</span> mute</span>
+                </div>
+                <button class="btn btn-primary btn-lg" type="button" id="game-start-btn">Start run</button>
+                <p class="faint" style="font-size:0.72rem;margin:14px 0 0">No cluster is contacted. Progress and best score stay in this browser.</p>
+              </div>
+            </div>
+
+            <div class="game-overlay" id="game-challenge" hidden>
+              <div class="game-card challenge">
+                <div class="ch-kicker" id="ch-kicker">Checkpoint</div>
+                <h3 id="ch-question">Question</h3>
+                <div class="options" id="ch-options"></div>
+                <div class="explanation" id="ch-explain"><div class="verdict" id="ch-verdict"></div><p id="ch-why"></p></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+                  <button class="btn btn-primary" type="button" id="ch-continue" hidden>Continue run</button>
+                  <a class="btn btn-ghost" href="./quiz.html" id="ch-quiz">Open the full quiz</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="game-overlay" id="game-over" hidden>
+              <div class="game-card">
+                <div class="eyebrow" style="justify-content:center">Run complete</div>
+                <h2 id="over-title">Good run.</h2>
+                <p id="over-copy">You collected concepts and built a neural map.</p>
+                <div class="grid grid-2" style="gap:10px;margin:18px 0">
+                  <div class="hud-item">SCORE <b id="over-score">0</b></div>
+                  <div class="hud-item">BEST <b id="over-best">0</b></div>
+                </div>
+                <div id="over-concepts" class="concept-log" style="justify-content:center"></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px">
+                  <button class="btn btn-primary" type="button" id="game-again">Play again</button>
+                  <a class="btn btn-ghost" href="./atlas.html">Open the atlas</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-controls">
+              <button type="button" id="move-left" aria-label="Move left">←</button>
+              <button type="button" id="move-right" aria-label="Move right">→</button>
+            </div>
+            <div class="game-flash" id="game-flash" aria-hidden="true"></div>
+          </div>
+
+          <div class="grid grid-3" style="margin-top:16px">
+            <div class="card"><h3 style="font-size:0.92rem">Collect</h3><p class="muted" style="font-size:0.82rem">Each orb is a real DevOps concept. Collecting one adds it to your neural map and speaks the definition.</p></div>
+            <div class="card"><h3 style="font-size:0.92rem">Dodge</h3><p class="muted" style="font-size:0.82rem">Red pods are failing workloads. Three hits end the run; a correct checkpoint grants a shield.</p></div>
+            <div class="card"><h3 style="font-size:0.92rem">Checkpoint</h3><p class="muted" style="font-size:0.82rem">Every four concepts, one explained question. Correct answers pay more and protect you from the next hit.</p></div>
+          </div>
+        </div>
+
+        <aside class="game-side">
+          <div class="panel neural-panel">
+            <h3>Neural map</h3>
+            <p>Every concept you collect becomes a node. The map is yours, stored locally.</p>
+            <canvas id="neural-canvas" width="320" height="180" aria-label="A growing map of the concepts you have collected"></canvas>
+            <div class="speech-row" style="margin-top:12px">
+              <span>Voice narration</span>
+              <label class="switch"><span class="sr-only">Toggle voice narration</span><input type="checkbox" id="voice-toggle" checked><i aria-hidden="true"></i></label>
+            </div>
+            <div class="concept-log" id="concept-log" aria-live="polite"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3>Run stats</h3><span class="spacer"></span><span class="explorer-count" id="run-status">idle</span></div>
+            <div class="panel-body">
+              <div class="side-stat">
+                <div class="cell"><b id="side-score">0</b><span>score</span></div>
+                <div class="cell"><b id="side-best">0</b><span>best</span></div>
+                <div class="cell"><b id="side-concepts">0</b><span>concepts this run</span></div>
+                <div class="cell"><b id="side-total">0</b><span>concepts all time</span></div>
+              </div>
+              <p class="faint" style="font-size:0.72rem;margin:12px 0 0">A checkpoint answer is saved in the same local profile as the quiz and labs. Nothing leaves this browser.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3>Last spoken</h3></div>
+            <div class="panel-body">
+              <p class="muted" id="speech-log" style="font-size:0.8rem;margin:0;min-height:3.2em">Start a run and the game will talk you through the first concept.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg></span><span>DevOps Field Manual<small>M0-AR / interactive edition</small></span></a><p>A browser-native field manual for people who learn by doing. Local-first progress, no account, no tracking.</p></div>
+      <div class="footer-col"><h4>Learn</h4><a href="./explorer.html">Artifact explorer</a><a href="./lab.html">Practice lab</a><a href="./quiz.html">Question bank</a><a href="./cheatsheet.html">Cheat sheet</a></div>
+      <div class="footer-col"><h4>Explore</h4><a href="./atlas.html">3D concept atlas</a><a href="./game.html">Cluster Runner</a><a href="./index.html#live-demo">Live demo</a><a href="./index.html#learning-paths">Learning paths</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener">GitHub repository</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/releases" target="_blank" rel="noopener">Releases</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/blob/master/LICENSE" target="_blank" rel="noopener">MIT license</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/issues" target="_blank" rel="noopener">Report an issue</a></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> M0-AR. Independent educational project.</span><span>Not affiliated with KodeKloud, the CNCF, or the vendors named in the artifacts.</span></div>
+  </div>
+</footer>
+
+<script src="./assets/js/site.js" defer></script>
+<script type="module" src="./assets/js/game.js"></script>
+</body>
+</html>

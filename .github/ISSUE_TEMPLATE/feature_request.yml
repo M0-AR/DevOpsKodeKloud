@@ -1,0 +1,48 @@
+name: Feature request
+description: Suggest an artifact, lab, question or site improvement.
+title: "[feature] "
+labels: ["enhancement", "triage"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What would you add?
+      options:
+        - New artifact (Kubernetes, Ansible, Puppet, CKA, CKS)
+        - New guided lab
+        - New quiz question
+        - Explorer improvement
+        - Atlas or game improvement
+        - Accessibility or mobile
+        - Documentation
+        - Release, container or automation
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does it solve?
+      description: Describe the learner who benefits and what they cannot do today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Keep it small and testable. Link related artifacts or sources.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional. What else could solve the same problem?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: This request is safe for learners and does not require a live cluster.
+          required: true

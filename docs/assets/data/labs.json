@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "notice": "Browser simulator with recorded outputs. No cluster is contacted. Commands are validated locally so you can practise the exact workflow safely.",
+  "labs": [
+    {
+      "id": "first-contact",
+      "title": "First contact with a cluster",
+      "category": "kubernetes",
+      "difficulty": "beginner",
+      "time": "3 min",
+      "brief": "Learn the three commands every Kubernetes session starts with: version, nodes, and pods.",
+      "objective": "Read cluster state without changing anything.",
+      "concept": "Observation before action",
+      "steps": [
+        {
+          "task": "Print the client and server Kubernetes version.",
+          "accept": ["^kubectl\\s+version(\\s+--(short|output=[a-z]+))?$"],
+          "hint": "kubectl version",
+          "explain": "kubectl version reports the client build and, when a cluster is reachable, the API server build. Version skew matters during upgrades.",
+          "output": "Client Version: v1.32.2\nKustomize Version: v5.6.0\nServer Version: v1.32.2"
+        },
+        {
+          "task": "List the cluster nodes.",
+          "accept": ["^kubectl\\s+get\\s+(nodes|node|no)(\\s+-o\\s+wide)?$"],
+          "hint": "kubectl get nodes",
+          "explain": "Nodes are the machines that run pods. The control plane schedules work onto them and reports their readiness.",
+          "output": "NAME           STATUS   ROLES           AGE   VERSION\ncontrolplane   Ready    control-plane   19d   v1.32.2\nnode01         Ready    <none>          19d   v1.32.2"
+        },
+        {
+          "task": "List pods in all namespaces.",
+          "accept": ["^kubectl\\s+get\\s+(pods|pod|po)(\\s+(-A|--all-namespaces))$"],
+          "hint": "kubectl get pods -A",
+          "explain": "Without -A you only see the current namespace. Cluster-wide inventory is the first step in almost every troubleshooting flow.",
+          "output": "NAMESPACE     NAME                                  READY   STATUS    RESTARTS   AGE\nkube-system   coredns-7db6d8ff4d-2xk9p              1/1     Running   0          19d\nkube-system   etcd-controlplane                     1/1     Running   2          19d\nkube-system   kube-apiserver-controlplane           1/1     Running   2          19d\nkube-system   kube-proxy-node01                     1/1     Running   0          19d\ndefault       web-6f7c9b8d4f-9q2mv                  1/1     Running   0          4d"
+        }
+      ]
+    },
+    {
+      "id": "namespace-and-pod",
+      "title": "Create a namespace and a pod",
+      "category": "kubernetes",
+      "difficulty": "beginner",
+      "time": "4 min",
+      "brief": "Scope your work in a namespace, then run a single NGINX pod imperatively.",
+      "objective": "Create a namespace, launch a pod, and confirm it is running.",
+      "concept": "Namespaces and pods",
+      "steps": [
+        {
+          "task": "Create a namespace named devops-lab.",
+          "accept": ["^kubectl\\s+create\\s+(namespace|ns)\\s+devops-lab$"],
+          "hint": "kubectl create namespace devops-lab",
+          "explain": "Namespaces group objects and provide a scope for names, quotas, and RBAC. Creating one first keeps experiments isolated.",
+          "output": "namespace/devops-lab created"
+        },
+        {
+          "task": "Run a pod named web using nginx:1.27 in the devops-lab namespace.",
+          "accept": ["^kubectl\\s+run\\s+web\\s+--image(=|\\s+)nginx:1\\.27(\\s+--port(=|\\s+)80)?(\\s+-n\\s+devops-lab|\\s+--namespace(=|\\s+)devops-lab)?$"],
+          "hint": "kubectl run web --image=nginx:1.27 --port=80 -n devops-lab",
+          "explain": "kubectl run creates a single pod. In real work a Deployment is preferred because it adds self-healing and rollout control.",
+          "output": "pod/web created"
+        },
+        {
+          "task": "Confirm the pod is Running in devops-lab.",
+          "accept": ["^kubectl\\s+get\\s+(pods|pod|po)(\\s+-n\\s+devops-lab|\\s+--namespace(=|\\s+)devops-lab)?(\\s+-o\\s+wide)?$"],
+          "hint": "kubectl get pods -n devops-lab",
+          "explain": "READY 1/1 and STATUS Running mean the container started and passed its readiness gate. It does not prove the app works.",
+          "output": "NAME   READY   STATUS    RESTARTS   AGE\nweb    1/1     Running   0          12s"
+        }
+      ]
+    },
+    {
+      "id": "expose-a-service",
+      "title": "Expose a pod with a Service",
+      "category": "kubernetes",
+      "difficulty": "beginner",
+      "time": "4 min",
+      "brief": "Give a pod a stable network identity and inspect the resulting service.",
+      "objective": "Create a NodePort service and read its allocated port.",
+      "concept": "Services and selectors",
+      "steps": [
+        {
+          "task": "Expose the web pod on port 80 as a NodePort service in devops-lab.",
+          "accept": ["^kubectl\\s+expose\\s+pod\\s+web\\s+--port(=|\\s+)80(\\s+--type(=|\\s+)NodePort)?(\\s+--name(=|\\s+)?web-svc)?(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl expose pod web --port=80 --type=NodePort --name=web-svc -n devops-lab",
+          "explain": "A Service selects pods by label and forwards traffic to them. NodePort additionally opens a port on every node.",
+          "output": "service/web-svc exposed"
+        },
+        {
+          "task": "Show the service and its NodePort.",
+          "accept": ["^kubectl\\s+get\\s+(services|service|svc)(\\s+web-svc)?(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl get svc web-svc -n devops-lab",
+          "explain": "The PORT(S) column shows clusterIP:port and the node port after the colon. Clients outside the cluster use nodeIP:nodePort.",
+          "output": "NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE\nweb-svc   NodePort   10.96.184.201   <none>        80:31284/TCP   9s"
+        },
+        {
+          "task": "Print the endpoints selected by the service.",
+          "accept": ["^kubectl\\s+get\\s+endpoints(lices)?\\s+web-svc(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl get endpoints web-svc -n devops-lab",
+          "explain": "Endpoints are the pod IPs behind a service. If the list is empty, the selector does not match any ready pod.",
+          "output": "NAME      ENDPOINTS        AGE\nweb-svc   10.244.1.17:80   42s"
+        }
+      ]
+    },
+    {
+      "id": "logs-and-describe",
+      "title": "Troubleshoot with logs and describe",
+      "category": "kubernetes",
+      "difficulty": "intermediate",
+      "time": "4 min",
+      "brief": "Follow the evidence trail: events first, logs second.",
+      "objective": "Read pod events and filter logs for errors.",
+      "concept": "Observability",
+      "steps": [
+        {
+          "task": "Describe the web pod in devops-lab.",
+          "accept": ["^kubectl\\s+describe\\s+(pods|pod|po)\\s+web(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl describe pod web -n devops-lab",
+          "explain": "The Events section at the bottom explains scheduling, image pulls, and probe failures. Read it before guessing.",
+          "output": "Name:             web\nNamespace:        devops-lab\nNode:             node01/172.30.2.2\nStatus:           Running\nEvents:\n  Type    Reason     Age   From               Message\n  ----    ------     ----  ----               -------\n  Normal  Scheduled  92s   default-scheduler  Successfully assigned devops-lab/web to node01\n  Normal  Pulled     91s   kubelet            Container image \"nginx:1.27\" already present on machine\n  Normal  Started    90s   kubelet            Started container web"
+        },
+        {
+          "task": "Show the last 50 log lines from the web container.",
+          "accept": ["^kubectl\\s+logs\\s+web(\\s+-n\\s+devops-lab)?(\\s+--tail(=|\\s+)50)?$"],
+          "hint": "kubectl logs web -n devops-lab --tail=50",
+          "explain": "--tail limits output so a noisy container does not flood your terminal. Combine with grep when you know the signal.",
+          "output": "127.0.0.1 - - [15/Nov/2026:10:02:11 +0000] \"GET / HTTP/1.1\" 200 615 \"-\" \"curl/8.5.0\"\n2026/11/15 10:02:11 [error] 29#29: *1 open() \"/usr/share/nginx/html/favicon.ico\" failed (2: No such file or directory)\n127.0.0.1 - - [15/Nov/2026:10:02:12 +0000] \"GET /favicon.ico HTTP/1.1\" 404 153 \"-\" \"curl/8.5.0\""
+        }
+      ]
+    },
+    {
+      "id": "rollout-and-rollback",
+      "title": "Ship a change, then roll it back",
+      "category": "kubernetes",
+      "difficulty": "intermediate",
+      "time": "5 min",
+      "brief": "Change an image, watch the rollout, and undo it without drama.",
+      "objective": "Use rollout status and rollout undo with confidence.",
+      "concept": "Revisions and recovery",
+      "steps": [
+        {
+          "task": "Update the web Deployment image to nginx:1.27-alpine.",
+          "accept": ["^kubectl\\s+set\\s+image\\s+deployment(/|\\s+)web\\s+(\\w+\\s*=\\s*)?nginx:1\\.27-alpine(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl set image deployment/web web=nginx:1.27-alpine -n devops-lab",
+          "explain": "Changing the pod template creates a new ReplicaSet. The Deployment gradually shifts traffic as new pods become ready.",
+          "output": "deployment.apps/web image updated"
+        },
+        {
+          "task": "Watch the rollout finish.",
+          "accept": ["^kubectl\\s+rollout\\s+status\\s+deployment(/|\\s+)web(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl rollout status deployment/web -n devops-lab",
+          "explain": "rollout status blocks until the update completes or fails, which makes it safe to use in scripts and CI.",
+          "output": "Waiting for deployment \"web\" rollout to finish: 1 out of 2 new replicas have been updated...\nWaiting for deployment \"web\" rollout to finish: 2 out of 2 new replicas have been updated...\ndeployment \"web\" successfully rolled out"
+        },
+        {
+          "task": "Roll the Deployment back to the previous revision.",
+          "accept": ["^kubectl\\s+rollout\\s+undo\\s+deployment(/|\\s+)web(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl rollout undo deployment/web -n devops-lab",
+          "explain": "rollout undo restores the previous ReplicaSet. The Deployment keeps history, so recovery is one command, not a rebuild.",
+          "output": "deployment.apps/web rolled back"
+        },
+        {
+          "task": "Show the rollout history for the Deployment.",
+          "accept": ["^kubectl\\s+rollout\\s+history\\s+deployment(/|\\s+)web(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl rollout history deployment/web -n devops-lab",
+          "explain": "History lists revisions. Add --revision=N to inspect the pod template behind a specific revision.",
+          "output": "deployment.apps/web\nREVISION  CHANGE-CAUSE\n1         <none>\n2         <none>\n3         <none>"
+        }
+      ]
+    },
+    {
+      "id": "resource-triage",
+      "title": "Find the resource hog",
+      "category": "exam",
+      "difficulty": "intermediate",
+      "time": "3 min",
+      "brief": "Use metrics to find which pod and node are under pressure.",
+      "objective": "Read top output and sort by memory.",
+      "concept": "Capacity triage",
+      "steps": [
+        {
+          "task": "Show memory usage for pods across all namespaces, highest first.",
+          "accept": ["^kubectl\\s+top\\s+(pods|pod|po)(\\s+-A|\\s+--all-namespaces)(\\s+--sort-by(=|\\s+)memory)?$"],
+          "hint": "kubectl top pods -A --sort-by=memory",
+          "explain": "kubectl top requires the metrics-server. Sorting by memory turns a wall of numbers into a ranked list.",
+          "output": "NAMESPACE     NAME                          CPU(cores)   MEMORY(bytes)\ndefault       analytics-7c9f8d6b5-4nq2p     182m         1.4Gi\nkube-system   etcd-controlplane             41m          412Mi\ndefault       web-6f7c9b8d4f-9q2mv          3m           38Mi"
+        },
+        {
+          "task": "Show node resource usage.",
+          "accept": ["^kubectl\\s+top\\s+(nodes|node|no)$"],
+          "hint": "kubectl top nodes",
+          "explain": "Node metrics show cluster-wide pressure. A pod can be healthy while the node it sits on is near capacity.",
+          "output": "NAME           CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)\ncontrolplane   212m         10%      1.2Gi           62%\nnode01         640m         32%      3.8Gi           78%"
+        }
+      ]
+    },
+    {
+      "id": "ansible-first-run",
+      "title": "Ansible: ping, then converge",
+      "category": "ansible",
+      "difficulty": "beginner",
+      "time": "5 min",
+      "brief": "Verify connectivity, check a playbook, and run it against inventory.",
+      "objective": "Use ansible and ansible-playbook against a real inventory file.",
+      "concept": "Agentless automation",
+      "steps": [
+        {
+          "task": "Ping all hosts in the inventory.",
+          "accept": ["^ansible\\s+all\\s+-m\\s+ping(\\s+-i\\s+inventory)?$"],
+          "hint": "ansible all -m ping -i inventory",
+          "explain": "The ping module is not ICMP. It opens an SSH session and runs a tiny Python probe, proving authentication and Python are ready.",
+          "output": "stapp01 | SUCCESS => {\n    \"changed\": false,\n    \"ping\": \"pong\"\n}\nstapp02 | SUCCESS => {\n    \"changed\": false,\n    \"ping\": \"pong\"\n}\nstapp03 | SUCCESS => {\n    \"changed\": false,\n    \"ping\": \"pong\"\n}"
+        },
+        {
+          "task": "Run a syntax check on basic-playbook.yml with the inventory.",
+          "accept": ["^ansible-playbook\\s+(-i\\s+inventory\\s+)?--syntax-check\\s+basic-playbook\\.yml$", "^ansible-playbook\\s+basic-playbook\\.yml\\s+(-i\\s+inventory\\s+)?--syntax-check$"],
+          "hint": "ansible-playbook -i inventory --syntax-check basic-playbook.yml",
+          "explain": "A syntax check parses the playbook without touching hosts. It catches YAML and module-name mistakes before they reach production.",
+          "output": "playbook: basic-playbook.yml"
+        },
+        {
+          "task": "Run basic-playbook.yml against the inventory.",
+          "accept": ["^ansible-playbook\\s+(-i\\s+inventory\\s+)?basic-playbook\\.yml(\\s+-i\\s+inventory)?$"],
+          "hint": "ansible-playbook -i inventory basic-playbook.yml",
+          "explain": "The PLAY RECAP is the source of truth: ok, changed, unreachable, failed. A green recap with changed=1 means the system moved toward the desired state once.",
+          "output": "PLAY [Create an empty file on App Server 2] ************************************\n\nTASK [Gathering Facts] *********************************************************\nok: [stapp02]\n\nTASK [Create /tmp/file.txt] ****************************************************\nchanged: [stapp02]\n\nPLAY RECAP *********************************************************************\nstapp02                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0"
+        }
+      ]
+    },
+    {
+      "id": "ansible-users",
+      "title": "Ansible: users, groups, and validation",
+      "category": "ansible",
+      "difficulty": "intermediate",
+      "time": "5 min",
+      "brief": "Run a user-management playbook and verify the result from the control node.",
+      "objective": "Understand loops, password hashes, and ad-hoc validation.",
+      "concept": "Desired state for people",
+      "steps": [
+        {
+          "task": "Run create-users-and-groups.yaml with the inventory.",
+          "accept": ["^ansible-playbook\\s+(-i\\s+inventory\\s+)?create-users-and-groups\\.yaml(\\s+-i\\s+inventory)?$"],
+          "hint": "ansible-playbook -i inventory create-users-and-groups.yaml",
+          "explain": "The play loops over users and applies group, home, and password settings. Fixed salts are required for true idempotency.",
+          "output": "PLAY [Ansbile Add User & Group] ************************************************\n\nTASK [Creating Admin Groups] ***************************************************\nchanged: [stapp01]\n\nTASK [Creating Dev Groups] *****************************************************\nchanged: [stapp01]\n\nTASK [Creating Admins Group Users] *********************************************\nchanged: [stapp01] => (item=rob)\nchanged: [stapp01] => (item=joy)\nchanged: [stapp01] => (item=david)\n\nPLAY RECAP *********************************************************************\nstapp01                    : ok=6    changed=5    unreachable=0    failed=0"
+        },
+        {
+          "task": "Validate that user rob exists on stapp01.",
+          "accept": ["^ansible\\s+stapp01\\s+-a\\s+[\"']?(id|getent\\s+passwd)\\s+rob[\"']?(\\s+-i\\s+inventory)?$"],
+          "hint": "ansible stapp01 -a \"id rob\" -i inventory",
+          "explain": "Ad-hoc commands are perfect for read-only verification. id rob proves the user and group membership without another playbook.",
+          "output": "stapp01 | CHANGED | rc=0 >>\nuid=1002(rob) gid=1003(admins) groups=1003(admins),10(wheel)"
+        }
+      ]
+    },
+    {
+      "id": "puppet-apply",
+      "title": "Puppet: noop, apply, verify",
+      "category": "puppet",
+      "difficulty": "intermediate",
+      "time": "4 min",
+      "brief": "Preview a catalog change, apply it, then prove NGINX is installed.",
+      "objective": "Use --noop before changing a machine.",
+      "concept": "Preview before converge",
+      "steps": [
+        {
+          "task": "Preview install-package.pp without changing the system.",
+          "accept": ["^(sudo\\s+)?puppet\\s+apply\\s+install-package\\.pp\\s+--noop$"],
+          "hint": "sudo puppet apply install-package.pp --noop",
+          "explain": "--noop compiles and compares the catalog but makes no changes. It is the Puppet equivalent of a dry run.",
+          "output": "Notice: Compiled catalog for node01 in environment production in 0.08 seconds\nNotice: /Stage[main]/Main/Package[nginx]/ensure: current_value absent, should be installed (noop)\nNotice: Class[Main]: Would have triggered 'refresh' from 1 event\nNotice: Applied catalog in 0.11 seconds"
+        },
+        {
+          "task": "Apply install-package.pp for real.",
+          "accept": ["^(sudo\\s+)?puppet\\s+apply\\s+install-package\\.pp$"],
+          "hint": "sudo puppet apply install-package.pp",
+          "explain": "Apply converges the system. The first run installs NGINX; a second run should report no changes, demonstrating idempotency.",
+          "output": "Notice: Compiled catalog for node01 in environment production in 0.07 seconds\nNotice: /Stage[main]/Main/Package[nginx]/ensure: created\nNotice: Applied catalog in 6.42 seconds"
+        },
+        {
+          "task": "Verify the installed NGINX package version.",
+          "accept": ["^(rpm\\s+-q\\s+nginx|nginx\\s+-v|dpkg\\s+-l\\s+nginx)$"],
+          "hint": "rpm -q nginx",
+          "explain": "Verification is separate from configuration. Always check the observed state instead of trusting the tool's success message.",
+          "output": "nginx-1.26.2-1.el9.x86_64"
+        }
+      ]
+    },
+    {
+      "id": "security-scan",
+      "title": "Security: scan before you deploy",
+      "category": "security",
+      "difficulty": "advanced",
+      "time": "4 min",
+      "brief": "Scan an image, read the critical count, and inspect what is actually running.",
+      "objective": "Make image risk visible before it reaches the cluster.",
+      "concept": "Supply chain hygiene",
+      "steps": [
+        {
+          "task": "Scan nginx:1.27 for vulnerabilities with Trivy.",
+          "accept": ["^trivy\\s+(image|i)\\s+nginx:1\\.27$"],
+          "hint": "trivy image nginx:1.27",
+          "explain": "Trivy reports vulnerabilities by package and severity. The critical count is a fast triage signal, not the whole risk picture.",
+          "output": "nginx:1.27 (debian 12.9)\nTotal: 128 (UNKNOWN: 0, LOW: 83, MEDIUM: 39, HIGH: 6, CRITICAL: 0)\n\n┌────────────┬────────────────┬──────────┬────────┬───────────────────┐\n│  Library   │ Vulnerability  │ Severity │ Status │ Installed Version │\n├────────────┼────────────────┼──────────┼────────┼───────────────────┤\n│ libssl3    │ CVE-2024-XXXXX │ HIGH     │ fixed  │ 3.0.15-1~deb12u1  │\n└────────────┴────────────────┴──────────┴────────┴───────────────────┘"
+        },
+        {
+          "task": "Show the running Deployment image in JSON.",
+          "accept": ["^kubectl\\s+get\\s+deployment\\s+alpha-xyz\\s+-o\\s+(json|yaml)$"],
+          "hint": "kubectl get deployment alpha-xyz -o json",
+          "explain": "Reading the live object proves which image actually runs. Tags can move; digests do not.",
+          "output": "{\n  \"kind\": \"Deployment\",\n  \"metadata\": { \"name\": \"alpha-xyz\", \"namespace\": \"default\" },\n  \"spec\": { \"template\": { \"spec\": { \"containers\": [ { \"name\": \"alpha-xyz\", \"image\": \"nginx:1.27\" } ] } } }\n}"
+        }
+      ]
+    },
+    {
+      "id": "jsonpath-and-logs",
+      "title": "CKA: jsonpath and filtered logs",
+      "category": "exam",
+      "difficulty": "advanced",
+      "time": "3 min",
+      "brief": "Extract exactly one field, then save only the evidence you need.",
+      "objective": "Practise the two most common exam output tricks.",
+      "concept": "Precision output",
+      "steps": [
+        {
+          "task": "Print only the first targetPort of service web-svc.",
+          "accept": ["^kubectl\\s+get\\s+(services|service|svc)\\s+web-svc\\s+-o\\s+jsonpath(=|\\s+)['\"]?\\{\\.spec\\.ports\\[0\\]\\.targetPort\\}['\"]?(\\s+-n\\s+devops-lab)?$"],
+          "hint": "kubectl get svc web-svc -o jsonpath='{.spec.ports[0].targetPort}'",
+          "explain": "jsonpath avoids parsing human-formatted tables. Quote the expression so the shell does not expand braces.",
+          "output": "80"
+        },
+        {
+          "task": "Save only ERROR lines from pod web to errors.log.",
+          "accept": ["^kubectl\\s+logs\\s+web(\\s+-n\\s+devops-lab)?\\s*\\|\\s*grep\\s+ERROR\\s*>\\s*errors\\.log$"],
+          "hint": "kubectl logs web -n devops-lab | grep ERROR > errors.log",
+          "explain": "The exam asks for a specific artifact. Filtering and redirecting produces exactly that file without noise.",
+          "output": "errors.log created (3 matching lines)"
+        }
+      ]
+    },
+    {
+      "id": "guestbook-deploy",
+      "title": "Deploy the Guestbook stack",
+      "category": "guestbook",
+      "difficulty": "advanced",
+      "time": "5 min",
+      "brief": "Apply a multi-tier app and verify every layer comes up.",
+      "objective": "Read a multi-document manifest and check the rollout.",
+      "concept": "Composition",
+      "steps": [
+        {
+          "task": "Apply all guestbook manifests in the directory.",
+          "accept": ["^kubectl\\s+apply\\s+-f\\s+deploy-guest-book-app-on-kubernetes/?$"],
+          "hint": "kubectl apply -f deploy-guest-book-app-on-kubernetes/",
+          "explain": "kubectl apply -f on a directory reads every YAML file. Ordering is handled by the API server, but dependencies still matter at runtime.",
+          "output": "deployment.apps/redis-master created\nservice/redis-master created\ndeployment.apps/redis-slave created\nservice/redis-slave created\ndeployment.apps/frontend created\nservice/frontend created"
+        },
+        {
+          "task": "Watch the frontend rollout complete.",
+          "accept": ["^kubectl\\s+rollout\\s+status\\s+deployment(/|\\s+)frontend$"],
+          "hint": "kubectl rollout status deployment/frontend",
+          "explain": "The frontend depends on Redis. A rollout can succeed while the app still fails, so check logs and endpoints next.",
+          "output": "Waiting for deployment \"frontend\" rollout to finish: 2 out of 3 new replicas have been updated...\ndeployment \"frontend\" successfully rolled out"
+        },
+        {
+          "task": "List the services to find the frontend NodePort.",
+          "accept": ["^kubectl\\s+get\\s+(services|service|svc)$"],
+          "hint": "kubectl get svc",
+          "explain": "The frontend Service exposes the app. NodePort is for labs; production usually uses an Ingress or LoadBalancer.",
+          "output": "NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE\nfrontend       NodePort    10.96.212.44     <none>        80:30080/TCP   48s\nredis-master   ClusterIP   10.96.88.10      <none>        6379/TCP       48s\nredis-slave    ClusterIP   10.96.121.77     <none>        6379/TCP       48s"
+        }
+      ]
+    }
+  ]
+}

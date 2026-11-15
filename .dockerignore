@@ -1,0 +1,13 @@
+.git
+.github
+.gitignore
+tools
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+LICENSE
+.DS_Store
+*.log
+node_modules

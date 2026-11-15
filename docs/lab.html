@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Practice Lab — DevOps Field Manual</title>
+<meta name="description" content="12 guided Kubernetes, Ansible, Puppet, security, and CKA labs in the browser. Type real commands, get realistic output, and learn why each step works.">
+<link rel="canonical" href="https://m0-ar.github.io/DevOpsKodeKloud/lab.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Practice Lab — DevOps Field Manual">
+<meta property="og:description" content="A browser terminal with 12 guided labs built from the repository's own artifacts.">
+<meta property="og:image" content="https://m0-ar.github.io/DevOpsKodeKloud/assets/img/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg></span><span>DevOps Field Manual<small>M0-AR / interactive edition</small></span></a>
+    <button class="menu-btn" type="button" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="nav-links" id="nav-links">
+      <a href="./index.html">Home</a>
+      <a href="./explorer.html">Explorer</a>
+      <a href="./lab.html" aria-current="page">Lab</a>
+      <a href="./quiz.html">Quiz</a>
+      <a href="./atlas.html">3D Atlas</a>
+      <a href="./game.html">Game</a>
+      <a href="./cheatsheet.html">Cheat sheet</a>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-github" href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener" aria-label="View source on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.66.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg></a>
+      <a class="btn btn-primary btn-sm" href="./quiz.html">Test yourself</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container-wide">
+      <div class="eyebrow">Practice lab</div>
+      <h1>Type real commands. <span class="gradient-text">See real output.</span></h1>
+      <p>Twelve guided labs built from the artifacts in this repository. Each step is validated against the actual command shape, then explained. The terminal is a simulator — it does not touch a live cluster, and it says so.</p>
+      <div class="page-actions">
+        <span class="pill"><span class="mono" id="lab-total">12</span> labs</span>
+        <span class="pill"><span class="dot" aria-hidden="true"></span><span id="lab-done">0</span> completed in this browser</span>
+        <a class="btn btn-ghost btn-sm" href="./explorer.html">Inspect the source files</a>
+      </div>
+      <p class="faint" style="font-size:0.74rem;margin-top:12px;max-width:80ch" id="lab-notice"></p>
+    </div>
+  </section>
+
+  <section class="app-main">
+    <div class="container-wide">
+      <div class="lab-layout">
+        <aside class="panel side-panel" aria-label="Lab catalogue">
+          <div class="panel-head"><h2>Lab catalogue</h2><span class="spacer"></span><span class="explorer-count" id="lab-progress-label">0/12</span></div>
+          <div class="lab-list" id="lab-list"></div>
+        </aside>
+
+        <div class="panel">
+          <div class="lab-head">
+            <div class="lab-kicker" id="lab-kicker">Kubernetes</div>
+            <h2 id="lab-title">Choose a lab</h2>
+            <p id="lab-brief">Select a lab from the catalogue to begin.</p>
+            <div class="lab-meta">
+              <span class="tag" id="lab-difficulty">beginner</span>
+              <span class="tag" id="lab-time">3 min</span>
+              <span class="tag" id="lab-concept">concept</span>
+            </div>
+            <div class="progress-line" style="margin-top:14px"><i id="lab-progress"></i></div>
+          </div>
+
+          <div class="terminal">
+            <div class="term-head">
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="term-title" id="term-title">student@controlplane — lab simulator</span>
+            </div>
+            <div class="term-body" id="term-body" role="log" aria-live="polite" aria-label="Lab terminal output"></div>
+            <form class="term-form" id="term-form" autocomplete="off">
+              <label class="sr-only" for="term-input">Terminal command</label>
+              <span class="ps1" aria-hidden="true">student@controlplane:~$</span>
+              <input id="term-input" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Type a command, then press Enter" aria-describedby="term-help">
+              <span class="sr-only" id="term-help">Press Enter to run. Type help for simulator commands.</span>
+            </form>
+          </div>
+
+          <div class="lab-task" id="lab-task" hidden>
+            <div class="task-label" id="task-label">Step 1 of 3</div>
+            <p id="task-text">Task</p>
+            <div class="actions">
+              <button class="btn btn-ghost btn-sm" type="button" id="hint-btn">Show hint</button>
+              <button class="btn btn-ghost btn-sm" type="button" id="restart-lab">Restart lab</button>
+            </div>
+            <div class="feedback" id="feedback" role="status"></div>
+          </div>
+
+          <div class="lab-complete" id="lab-complete" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+            <h3>Lab complete</h3>
+            <p id="complete-copy">You finished every step.</p>
+            <div class="actions" style="justify-content:center;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+              <button class="btn btn-primary" type="button" id="next-lab">Next lab</button>
+              <a class="btn btn-ghost" href="./quiz.html">Answer questions on this topic</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"/><path d="m8 9 3 3-3 3"/><path d="M13 15h4"/></svg></span><span>DevOps Field Manual<small>M0-AR / interactive edition</small></span></a><p>A browser-native field manual for people who learn by doing. Local-first progress, no account, no tracking.</p></div>
+      <div class="footer-col"><h4>Learn</h4><a href="./explorer.html">Artifact explorer</a><a href="./lab.html">Practice lab</a><a href="./quiz.html">Question bank</a><a href="./cheatsheet.html">Cheat sheet</a></div>
+      <div class="footer-col"><h4>Explore</h4><a href="./atlas.html">3D concept atlas</a><a href="./game.html">Cluster Runner</a><a href="./index.html#live-demo">Live demo</a><a href="./index.html#learning-paths">Learning paths</a></div>
+      <div class="footer-col"><h4>Project</h4><a href="https://github.com/M0-AR/DevOpsKodeKloud" target="_blank" rel="noopener">GitHub repository</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/releases" target="_blank" rel="noopener">Releases</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/blob/master/LICENSE" target="_blank" rel="noopener">MIT license</a><a href="https://github.com/M0-AR/DevOpsKodeKloud/issues" target="_blank" rel="noopener">Report an issue</a></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> M0-AR. Independent educational project.</span><span>Not affiliated with KodeKloud, the CNCF, or the vendors named in the artifacts.</span></div>
+  </div>
+</footer>
+
+<script src="./assets/js/site.js" defer></script>
+<script src="./assets/js/lab.js" defer></script>
+</body>
+</html>

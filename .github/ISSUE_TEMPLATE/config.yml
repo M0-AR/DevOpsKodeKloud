@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live field manual
+    url: https://m0-ar.github.io/DevOpsKodeKloud/
+    about: Try the explorer, labs, quiz, atlas, game and cheat sheet before filing a bug.
+  - name: Security report
+    url: https://github.com/M0-AR/DevOpsKodeKloud/security/advisories/new
+    about: Report vulnerabilities privately. Do not open a public issue.
+  - name: Contributing guide
+    url: https://github.com/M0-AR/DevOpsKodeKloud/blob/master/CONTRIBUTING.md
+    about: How to add artifacts, labs, questions and fixes.
