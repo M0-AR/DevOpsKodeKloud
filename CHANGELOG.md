@@ -57,6 +57,9 @@ complete, browser-native learning product.
   `prefers-reduced-motion`.
 - All internal page, asset and data links resolve; the site has no broken
   local references.
+- The embedded demo now hides the nested page header and duplicate
+  full-screen link, and the sticky header is opaque enough that page content
+  cannot ghost through it.
 
 ### Security
 

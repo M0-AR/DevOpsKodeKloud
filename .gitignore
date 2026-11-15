@@ -18,3 +18,6 @@ __pycache__/
 *.swo
 .DS_Store?
 ehthumbs.db
+
+DevOpsKodeKloud-docs-*.zip
+SHA256SUMS.txt

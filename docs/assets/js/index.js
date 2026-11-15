@@ -68,6 +68,11 @@
       iframe.addEventListener("load", () => {
         clearTimeout(loadTimer);
         loading.classList.remove("is-active");
+        try {
+          const style = iframe.contentDocument.createElement("style");
+          style.textContent = ".site-header,.embedded-open{display:none!important}";
+          iframe.contentDocument.head.appendChild(style);
+        } catch (e) { /* same-origin pages only */ }
       });
       panel.appendChild(iframe);
       loadTimer = setTimeout(() => loading.classList.remove("is-active"), 12000);
@@ -109,6 +114,11 @@
     launch.addEventListener("click", () => {
       launched = true;
       mountIframe();
+      requestAnimationFrame(() => {
+        const shell = document.querySelector(".demo-shell");
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (shell) shell.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+      });
     });
 
     showPoster(active);
