@@ -653,7 +653,7 @@ If you use this project in a course, workshop or research, cite it using the
 metadata in [`CITATION.cff`](CITATION.cff):
 
 ```text
-M0-AR. DevOps Field Manual, version 2.0.0. 2026.
+M0-AR. DevOps Field Manual, version 2.0.1. 2026.
 https://github.com/M0-AR/DevOpsKodeKloud
 ```
 

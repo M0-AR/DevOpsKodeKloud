@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [2.0.1] — 2026-11-16
+
+### Fixed
+
+- The embedded demo hides the nested page header and duplicate full-screen
+  link, scrolls into view on launch, and the sticky header no longer lets
+  page content ghost through.
+- Bumped the offline cache so returning visitors receive the corrected
+  styles and demo behaviour immediately.
+
 ## [2.0.0] — 2026-11-16
 
 The release that turns the repository from a collection of scripts into a
@@ -57,9 +67,6 @@ complete, browser-native learning product.
   `prefers-reduced-motion`.
 - All internal page, asset and data links resolve; the site has no broken
   local references.
-- The embedded demo now hides the nested page header and duplicate
-  full-screen link, and the sticky header is opaque enough that page content
-  cannot ghost through it.
 
 ### Security
 

@@ -1,5 +1,5 @@
 /* Offline shell for the DevOps Field Manual. */
-const CACHE = "dfm-site-v2";
+const CACHE = "dfm-site-v3";
 const CORE = [
   "./",
   "./index.html",

@@ -4,7 +4,7 @@ title: "DevOps Field Manual"
 abstract: "An interactive, local-first DevOps learning environment generated from 67 real Kubernetes, Ansible, Puppet, CKA and CKS artifacts, with a searchable explorer, guided labs, spaced-repetition quiz, 3D concept atlas, game and command cheat sheet."
 authors:
   - name: "M0-AR"
-version: 2.0.0
+version: 2.0.1
 date-released: 2026-11-16
 url: "https://m0-ar.github.io/DevOpsKodeKloud/"
 repository-code: "https://github.com/M0-AR/DevOpsKodeKloud"
